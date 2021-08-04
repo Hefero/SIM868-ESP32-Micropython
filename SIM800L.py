@@ -1,4 +1,3 @@
-
 # Imports
 import time
 import json
@@ -81,7 +80,7 @@ class Modem(object):
                 MODEM_POWER_ON_PIN_OBJ.value(1)
 
             # Setup UART
-            self.uart = UART(1, 9600, timeout=1000, rx=self.MODEM_TX_PIN, tx=self.MODEM_RX_PIN)
+            self.uart = UART(1, 9600, timeout=1000, rx=Pin(self.MODEM_TX_PIN), tx=Pin(self.MODEM_RX_PIN))
 
         # Test AT commands
         retries = 0
@@ -140,7 +139,12 @@ class Modem(object):
                     'dopost':     {'string':'AT+HTTPACTION=1', 'timeout':3, 'end': '+HTTPACTION'},
                     'getdata':    {'string':'AT+HTTPREAD', 'timeout':3, 'end': 'OK'},
                     'closehttp':  {'string':'AT+HTTPTERM', 'timeout':3, 'end': 'OK'},
-                    'closebear':  {'string':'AT+SAPBR=0,1', 'timeout':3, 'end': 'OK'}
+                    'closebear':  {'string':'AT+SAPBR=0,1', 'timeout':3, 'end': 'OK'},
+                    'gpspower':  {'string':'AT+CGNSPWR={}'.format(data), 'timeout':3, 'end': 'OK'},
+                    'gpsread':  {'string':'AT+CGNSINF', 'timeout':3, 'end': 'OK'},
+                    'text_mode':  {'string':'AT+CMGF=1', 'timeout':3, 'end': 'OK'},
+                    'sms_mode':  {'string':'AT+CMGS="{}"'.format(data), 'timeout':3, 'end': '>'}
+                    'sms_data':  {'string':'{}'.format(data), 'timeout':3, 'end': 'OK'}    
         }
 
         # References:
@@ -243,7 +247,54 @@ class Modem(object):
     def get_info(self):
         output = self.execute_at_command('modeminfo')
         return output
-
+    
+    def gps_on(self):
+        output = self.execute_at_command('gpspower',1)
+        return output
+    
+    def gps_off(self):
+        output = self.execute_at_command('gpspower',0)
+        return output
+    def gps_read(self):
+        output = self.execute_at_command('gpsread')
+        gps = output.replace('+CGNSINF: ','');
+        gps = gps.split(',')
+        
+        for x in range(len(gps)):
+            if gps[x] == '':
+               gps[x] = '0'
+        gps = {
+            'Power':int(gps[0]),
+            'Fix':int(gps[1]),
+            'Time':gps[2],
+            'Latitude':float(gps[3]),
+            'Longitude':float(gps[4]),
+            'Altitude':float(gps[5]),
+            'Speed':float(gps[6]),
+            'Course':float(gps[7]),
+            'Fix Mode':float(gps[8]),
+            'HDOP':float(gps[10]),
+            'PDOP':float(gps[11]),
+            'VDOP':float(gps[12]),
+            'SIV':float(gps[14]), #Satellites in View
+            'SIU':float(gps[15]), #GNSS Satellites Used
+            'GSIV':float(gps[16]), #GLONASS Satellites in View
+            'C/N0 max':float(gps[18]), #carrier-to-noise density
+            'HPA':float(gps[19]),
+            'VPA':float(gps[20]),
+            }
+        return gps
+    def send_sms(self,number=None,msg=''):
+        if type(number) != 'string':
+			raise Exception('Invalid number')
+        if type(msg) != 'string':
+			raise Exception('Invalid message')
+        output = self.execute_at_command('text_mode')
+        output = self.execute_at_command('sms_mode',number)
+        msg = msg + char(26)
+        output = self.execute_at_command('sms_data',msg)
+        return output
+        
     def battery_status(self):
         output = self.execute_at_command('battery')
         return output
@@ -427,3 +478,4 @@ class Modem(object):
         self.execute_at_command('closehttp')
 
         return Response(status_code=response_status_code, content=response_content)
+
