@@ -2,7 +2,7 @@
 # SIM800L example usage
 # ---------------------
 
-from SIM800L import Modem
+from SIM868 import Modem
 from machine import Timer
 import json
 

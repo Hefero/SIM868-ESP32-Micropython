@@ -1,6 +1,6 @@
 
 import unittest
-from SIM800L import Modem
+from SIM868 import Modem
 
 # Mock execute_at_command function
 def mock_execute_at_command(output):
