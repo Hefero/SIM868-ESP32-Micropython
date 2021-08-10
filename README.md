@@ -7,6 +7,8 @@ Example usage of HTTP is in the example_SIM868.py script, just set the APN and c
 
 Example usage of GPS is in the gps_example.py script, run the "example_usage" function.
 
+Example usage of SMS is in the sms_example.py script, run the "example_usage" function.
+
 ## How to use
 
 - [Tutorial on getting started with the RP2040 and MicroPython](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/2) from **Install Thonny** to **Blink the onboard LED** is the most relavant.
