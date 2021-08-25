@@ -29,10 +29,10 @@ Initialize a class of Modem.
 ### Params
 - **uart**: Hardware uart number to use
 - **MODEM_PWKEY_PIN**: Pin that the power key is attaced too. N/A for the RP2040-SIM868.
-- **MODEM_RST_PIN**: Pin that the Reset on the SIM868 is attaced too. N/A for the RP2040-SIM868.
-- **MODEM_POWER_ON_PIN**: Pin that the Power on/off on the SIM868 is attaced too. PIN 3 on the RP2040-SIM868.
-- **MODEM_TX_PIN**: Pin that the TX on the SIM868 is attaced too. PIN 5 on the RP2040-SIM868.
-- **MODEM_TX_PIN**: Pin that the RX on the SIM868 is attaced too. PIN 4 on the RP2040-SIM868.
+- **MODEM_RST_PIN**: Pin that the Reset on the SIM868 is attached too. N/A for the RP2040-SIM868.
+- **MODEM_POWER_ON_PIN**: Pin that the Power on/off is attached too on the SIM868. PIN 3 on the RP2040-SIM868.
+- **MODEM_TX_PIN**: Pin that the TX on the SIM868 is attached too. PIN 5 on the RP2040-SIM868.
+- **MODEM_TX_PIN**: Pin that the RX on the SIM868 is attached too. PIN 4 on the RP2040-SIM868.
 ---
 ``` python
 Modem.initialize()
@@ -55,7 +55,7 @@ Set the APN to `internet` with no username or password. Otherwise please contact
  
 ---
 ``` python
-Modem.disconnect(url, mode='GET', data=None, content_type='application/json')
+Modem.disconnect()
 ```
 ### Brief
 Disconnect from the GPRS network.
@@ -72,7 +72,7 @@ Only support for GET and POST method at this time.
 - **url**: URL to send the HTTP Request too.
 - **mode**: HTTP method to use.
 - **data**: Data to be sent on the network via HTTP.
-- **content_type**: Set the HTTP contentype header.
+- **content_type**: Set the HTTP content type header.
 ### Returns
 HTTP Response.
 
@@ -97,7 +97,7 @@ Modem.gps_read()
 ### Brief
 Request GPS data from the SIM868.
 ### Returns
-GPS data as a dictonary.
+GPS data as a dictionary.
 
 ---
 ``` python
