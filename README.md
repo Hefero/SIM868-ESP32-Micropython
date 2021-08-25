@@ -16,7 +16,7 @@ Example usage of SMS is in the sms_example.py script, run the "example_usage" fu
 - Save/upload one of the example file or create your own script.
 
 ## Credit
-This is a modified fork from [Pythings](https://github.com/pythings/Drivers) SIM800L HAL Driver. There driver significantly speeded up development of [RP2040-SIM868](https://www.robotics.org.za/#) HAL driver.
+This is a modified fork from [Pythings](https://github.com/pythings/Drivers) SIM800L HAL Driver. There driver significantly sped up development of [RP2040-SIM868](https://www.robotics.org.za/#) HAL driver.
 
 ## Methodes
 
