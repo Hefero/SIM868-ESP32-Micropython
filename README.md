@@ -1,4 +1,4 @@
-# RP2040 SIM868 Micropython Library
+# SIM868 ESP32 Micropython MQTT Tracker
 
 
 - __SIM868L.py__: a pure-MicroPython driver for the SIM868 GPRS module with both HTTP(S) GET and POST support. Works out of the box on the [RP2040-SIM868](https://www.robotics.org.za/#). 
