@@ -80,7 +80,7 @@ class Modem(object):
                 MODEM_POWER_ON_PIN_OBJ.value(1)
 
             # Setup UART
-            self.uart = UART(1, 9600, timeout=1000, rx=Pin(self.MODEM_TX_PIN), tx=Pin(self.MODEM_RX_PIN))
+            self.uart = UART(2, 115200, timeout=1000, rx=Pin(self.MODEM_RX_PIN), tx=Pin(self.MODEM_TX_PIN))
 
         # Test AT commands
         retries = 0
@@ -113,7 +113,7 @@ class Modem(object):
 
         # Commands dictionary. Not the best approach ever, but works nicely.
         commands = {
-                    'modeminfo':  {'string':'ATI', 'timeout':3, 'end': 'OK'},
+                    'modeminfo':  {'string':'AT', 'timeout':3, 'end': 'OK'},
                     'fwrevision': {'string':'AT+CGMR', 'timeout':3, 'end': 'OK'},
                     'battery':    {'string':'AT+CBC', 'timeout':3, 'end': 'OK'},
                     'scan':       {'string':'AT+COPS=?', 'timeout':60, 'end': 'OK'},
@@ -143,7 +143,7 @@ class Modem(object):
                     'gpspower':  {'string':'AT+CGNSPWR={}'.format(data), 'timeout':3, 'end': 'OK'},
                     'gpsread':  {'string':'AT+CGNSINF', 'timeout':3, 'end': 'OK'},
                     'text_mode':  {'string':'AT+CMGF=1', 'timeout':3, 'end': 'OK'},
-                    'sms_mode':  {'string':'AT+CMGS="{}"'.format(data), 'timeout':3, 'end': '>'}
+                    'sms_mode':  {'string':'AT+CMGS="{}"'.format(data), 'timeout':3, 'end': '>'},
                     'sms_data':  {'string':'{}'.format(data), 'timeout':3, 'end': 'OK'}    
         }
 
@@ -286,9 +286,9 @@ class Modem(object):
         return gps
     def send_sms(self,number=None,msg=''):
         if type(number) != 'string':
-			raise Exception('Invalid number')
+            raise Exception('Invalid number')
         if type(msg) != 'string':
-			raise Exception('Invalid message')
+            raise Exception('Invalid message')
         output = self.execute_at_command('text_mode')
         output = self.execute_at_command('sms_mode',number)
         msg = msg + char(26)
